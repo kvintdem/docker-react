@@ -1,0 +1,16 @@
+# any time we want Docker, we need super user permissions
+sudo: required
+
+# we need a copy of Docker
+services:
+  - docker
+
+# need to instruct Docker to create an image from our code
+before_install:
+  - docker build -t dun/docker-react -f Dockerfile.dev .
+
+# instruct Travis to run the tests
+# if the '-- --coverage' flag is not used, 
+# npm would just hang in there waiting for input from the user
+script:
+  - docker run -e CI=true dun/docker-react npm run test -- --coverage
