@@ -21,6 +21,12 @@ RUN npm run build
 # the base image automatically starts up the nginx server
 # there is no need to set a default command at the end
 FROM nginx
+
+# this is just an instructor for the developer that this port should be opened in development
+# when running docker run, so in theory it does nothing
+# however, ElasticBeanstalk actually uses this port
+EXPOSE 80
+
 # copy over files from the given phase: --from=phase
 # FROM folder: /home/node/app/build is where the built files are
 # TO folder: /usr/share/nginx/html is given in the nginx documentation
