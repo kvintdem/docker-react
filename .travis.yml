@@ -38,9 +38,10 @@ deploy:
   on:
     branch: master
 
-  # generate a new user in AWS with full access to ElasticBeanstalk
+  # generate a new user in AWS with full access to ElasticBeanstalk: 
+  # AdministratorAccess-AWSElasticBeanstalk
   # the user will get generated an access key and secret key
-  # in Travis UI, check more options and environment variables
+  # in Travis UI, click 'More options' and 'Settings' and find the environment variables section
   # ensure the 'display value in build log' is not enabled
   access_key_id: $AWS_ACCESS_KEY
   secret_access_key: $AWS_SECRET_KEY
