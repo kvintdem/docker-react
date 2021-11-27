@@ -1,0 +1,29 @@
+version: '3'
+services:
+  web:
+    # when trying to use simply 'build .' it assumes that there is
+    # a Dockerfile in the current directory but there is only 
+    # Dockerfile.dev so it runs into an error
+    build:
+      # the context is the location for all files and folders
+      context: .
+      # dockerfile is the location for our Dockerfile
+      dockerfile: Dockerfile.dev
+    ports:
+      - 3000:3000
+    volumes:
+      # means: do not try to map node_modules outside the container
+      # with node_modules inside the container
+      - /home/node/app/node_modules
+      # map everything outside the container with the app folder in the container
+      - .:/home/node/app
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    # ports are not necessary for testing
+    volumes:
+      - /home/node/app/node_modules
+      - .:/home/node/app
+    # overwrite the basic command in the container
+    command: [ "npm", "run", "test" ]

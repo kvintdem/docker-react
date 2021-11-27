@@ -1,3 +1,5 @@
+language: generic
+
 # any time we want Docker, we need super user permissions
 sudo: required
 
@@ -13,4 +15,35 @@ before_install:
 # if the '-- --coverage' flag is not used, 
 # npm would just hang in there waiting for input from the user
 script:
-  - docker run -e CI=true dun/docker-react npm run test -- --coverage
+  - docker run -e CI=true dun/docker-react npm run test
+
+
+# how to deploy it to aws
+deploy:
+  provider: elasticbeanstalk
+  region: "us-west-2"
+
+  # name we gave for the App in Elastic Beanstalk
+  app: "docker"
+
+  # web environment name
+  # text written after / in the user interface when checking out Elastic Beanstalk app
+  env: "Docker-env"
+  # name of S3 bucket created by ElasticBeanstalk automatically
+  bucket_name: "elasticbeanstalk-us-west-2-xfsfsdfsfsfsfs"
+  # a bucket is only created in S3 if at least one deploy has run
+  # the path will be the samee as the name of the app
+  bucket_path: "docker"
+  # only deploy the app if branch master gets new code
+  on:
+    branch: master
+
+  # generate a new user in AWS with full access to ElasticBeanstalk
+  # the user will get generated an access key and secret key
+  # in Travis UI, check more options and environment variables
+  # ensure the 'display value in build log' is not enabled
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
+  ## or??
+  #secret_access_key: 
+  #  secure: $AWS_SECRET_KEY
